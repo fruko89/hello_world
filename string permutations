@@ -1,13 +1,19 @@
-Find permutations of a string
+//Find permutations of a string
 
-	static void permutations(String input, List<String> perms)
+import java.util.ArrayList;
+import java.util.List;
+
+public class question1 
+{
+	static void permutations(String input, List<String> perms, int degree)
 	{
-		perm("", input, perms);
+		int inputStrStopLength = input.length() - degree;
+		perm("", input, perms, inputStrStopLength);
 	}
 	
-	static void perm(String s1, String s2, List<String> perms)
-	{
-		if(s2.length() == 0)
+	static void perm(String s1, String s2, List<String> perms, int inputStrStopLength){
+		
+		if(s2.length() == inputStrStopLength)
 		{
 			perms.add(s1);
 			return;
@@ -15,16 +21,15 @@ Find permutations of a string
 		
 		for(int i = 0; i<s2.length();i++)
 		{
-			perm(s1+s2.substring(i,i+1), s2.substring(0,i)+s2.substring(i+1), perms);
+			perm(s1+s2.substring(i,i+1), s2.substring(0,i)+s2.substring(i+1), perms, inputStrStopLength);
 		}	
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args)
+	public static void main(String[] args) 
 	{
-		List<String> perms = new ArrayList<String>();
-		permutations("ab",perms);
+		List<String> perms = new ArrayList<String>();	
+		permutations("abcd",perms, 4);
 		System.out.println(perms);
 	}
+
+}	
