@@ -1,3 +1,5 @@
+// Compare a binary string to a hex string to see if they are equal
+
 public class question2 {
 
 	static boolean areEqual(String binary, String hex)
