@@ -1,0 +1,62 @@
+public class question2 {
+
+	static boolean areEqual(String binary, String hex)
+	{
+		int binaryValue = convertToBaseTen(binary, 2);
+		int hexValue = convertToBaseTen(hex, 16);
+		
+		if(binaryValue == -1 || hexValue == -1)
+		{
+			return false;
+		}
+		
+		return binaryValue == hexValue;
+	}
+	
+	static int convertToBaseTen(String number, int base)
+	{
+		if(base < 1 || (base > 10 && base != 16))
+		{
+			return -1;
+		}
+		
+		int value = 0;
+		for (int i = 0; i < number.length(); i++)
+		{
+			int digit = getNumberValue(number.charAt(number.length() - 1 - i));
+			if(digit < 0 || digit >= base)
+			{
+				return -1;
+			}
+			value += digit*Math.pow(base, i);	
+		}
+		
+		return value;
+	}
+	
+	static int getNumberValue(char digit)
+	{
+		if (digit >= '0' && digit <= '9')
+		{ 
+			return digit -'0';
+		}
+		else if (digit >= 'A' && digit <= 'F')
+		{
+			return digit - 'A' + 10;
+		}
+		else if (digit >= 'a' && digit <= 'f')
+		{
+			return digit - 'a' + 10;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+
+	public static void main(String[] args) 
+	{
+		System.out.println(areEqual("1100100", "64"));
+	}
+
+}
