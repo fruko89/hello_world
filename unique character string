@@ -1,53 +1,54 @@
 // Check if a given input string has unique characters.
 
 static boolean hasUniqueChars(String input)
+{
+	if(input.length() > 256)
 	{
-		if(input.length() > 256)
+		return false;
+	}
+		
+	int chars[] = new int[256];
+		
+	for(int i = 0; i < input.length(); i++)
+	{
+		if(chars[input.charAt(i)] != 0)
 		{
 			return false;
 		}
 		
-		int chars[] = new int[256];
-		
-		for(int i = 0; i < input.length(); i++)
-		{
-			if(chars[input.charAt(i)] != 0)
-			{
-				return false;
-			}
-			chars[input.charAt(i)]++;
-		}
-		
-		return true;
+		chars[input.charAt(i)]++;
 	}
+		
+	return true;
+}
 	
-	static boolean hasUniqueCharsNoBuffer(String input)
+static boolean hasUniqueCharsNoBuffer(String input)
+{
+	if(input.length() > 26)
 	{
-		if(input.length() > 26)
+		return false;
+	}
+		
+	int bitMaskSoFar = 0;
+		
+	for(int i = 0; i < input.length(); i++)
+	{
+		int shift = input.charAt(i) -'a';
+			
+		if((bitMaskSoFar & (1 << shift)) > 0)
 		{
 			return false;
 		}
-		
-		int bitMaskSoFar = 0;
-		
-		for(int i = 0; i < input.length(); i++)
-		{
-			int shift = input.charAt(i) -'a';
 			
-			if((bitMaskSoFar & (1 << shift)) > 0)
-			{
-				return false;
-			}
-			
-			bitMaskSoFar |= (1 << shift);
-		}
-		
-		return true;
+		bitMaskSoFar |= (1 << shift);
 	}
+		
+	return true;
+}
 	
 	
-	public static void main(String[] args) 
-	{
-		System.out.println(hasUniqueChars("helloworld"));
-		System.out.println(hasUniqueCharsNoBuffer("helloworld"));
-	}
+public static void main(String[] args) 
+{
+	System.out.println(hasUniqueChars("helloworld"));
+	System.out.println(hasUniqueCharsNoBuffer("helloworld"));
+}
