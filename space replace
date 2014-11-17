@@ -1,0 +1,70 @@
+// Replace spaces with '%20'
+
+public class question6 
+{
+	static String replaceSpaces(String s)
+	{
+		if (s == null)
+		{
+			return s;
+		}
+		
+		char charArr[] = s.toCharArray();
+		StringBuffer sb = new StringBuffer();
+		
+		for(int i=0; i<s.length(); i++)
+		{
+			sb.append(charArr[i] == ' ' ? "%20" : charArr[i]);
+		}
+		
+		return sb.toString();
+	}
+	
+	// In place version
+	static void replaceSpaces2(char charArr[], int trueLength)
+	{
+		if (charArr == null || charArr.length == 0 || trueLength <= 0)
+		{
+			return;
+		}
+		
+		int spaceCount = 0;
+		
+		for(int i = 0; i < trueLength; i++)
+		{
+			if(charArr[i] == ' ')
+			{
+				spaceCount++;
+			}
+		}
+		
+		int newLength = trueLength + 2*spaceCount;
+		
+		for(int i = trueLength - 1; i >= 0; i--)
+		{
+			if(charArr[i] == ' ')
+			{
+				charArr[newLength - 1] = '0';
+				charArr[newLength - 2] = '2';
+				charArr[newLength - 3] = '%';
+				newLength -= 3;
+			}
+			else
+			{
+				charArr[newLength -1] = charArr[i];
+				newLength--;
+			}	
+		}
+	}
+
+	public static void main(String[] args) 
+	{
+		System.out.println(replaceSpaces("ali ata bak."));
+		
+		String s = "ali ata bak         ";
+		char arr[] = s.toCharArray();
+		replaceSpaces2(arr, 11);
+		s = new String(arr);
+		System.out.println(s);
+	}
+}
