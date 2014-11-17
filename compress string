@@ -1,0 +1,48 @@
+//Compress a string like "aabccc" => "a2b1c3"
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class question7 
+{
+	static String compress(String s)
+	{
+		if(s == null || s.length() == 0)
+		{
+			return s;
+		}
+		
+		List<String> counts = new LinkedList<String>();
+		
+		int count = 1;
+		for(int i = 1; i < s.length(); i++)
+		{
+			if(s.charAt(i-1) == s.charAt(i))
+			{
+				count++;
+			}
+			else
+			{
+				counts.add(s.substring(i-1, i)+String.valueOf(count));
+				count = 1;
+			}
+		}
+		
+		counts.add(s.substring(s.length()-1)+String.valueOf(count));
+		
+		StringBuilder sb = new StringBuilder();
+		for(String c : counts)
+		{
+			sb.append(c);
+		}
+		
+		return sb.toString();
+		
+	}
+	
+	public static void main(String[] args) 
+	{
+		
+		System.out.println(compress("aaaacccckkkllanla"));
+	}
+}
