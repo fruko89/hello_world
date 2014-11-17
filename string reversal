@@ -1,0 +1,83 @@
+// Reverse a string.
+
+// C/C++ (C-style string)
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+void reverse(char* str)
+{
+	if (!str || strlen(str) < 2)
+	{
+		return;
+	}
+	
+    char* end = str;
+    char temp;
+   
+    while (*end)
+    {
+    	end++;   
+    }    
+    end--;
+    
+    while (str < end)
+    {
+        temp = *end;
+        *end-- = *str;
+        *str++ = temp;
+    }
+}
+
+int main()
+{
+   char str[] = "aliliknana";
+   reverse(str);
+   cout << str << endl; 
+   
+   return 0;
+}
+
+// Java
+static String reverse(String input)
+{
+	if (input == null || input.length() < 2) 
+	{
+		return input;
+	}
+		
+	char inputArr[] = input.toCharArray();
+		
+	for (int i = 0; i < input.length() / 2; i++)
+	{
+		char temp = inputArr[i];
+		inputArr[i] = inputArr[inputArr.length-1-i];
+		inputArr[inputArr.length-1-i] = temp;
+	}
+		
+	return new String(inputArr);
+}
+	
+static String reverse2(String input)
+{
+	if (input == null || input.length() < 2) 
+	{
+		return input;
+	}
+		
+	StringBuffer sb = new StringBuffer();
+		
+	for (int i = input.length() - 1; i >= 0; i--)
+	{
+		sb.append(input.charAt(i));
+	}
+		
+	return sb.toString();
+}
+	
+public static void main(String[] args) 
+{
+	System.out.println(reverse("ali"));
+	System.out.println(reverse("osman"));	
+}
