@@ -1,3 +1,9 @@
+// Check if two strings are permutations of each other
+
+import java.util.Arrays;
+
+public class question5 {
+
 	static boolean areCharacterEqual(String s1, String s2)
 	{
 		if(s1.length() != s2.length()) 
@@ -26,3 +32,4 @@
 	{
 		System.out.println(areCharacterEqual("abcak", "ckbaa"));
 	}
+}
