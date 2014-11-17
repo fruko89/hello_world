@@ -79,5 +79,5 @@ static String reverse2(String input)
 public static void main(String[] args) 
 {
 	System.out.println(reverse("ali"));
-	System.out.println(reverse("kemal"));	
+	System.out.println(reverse("osman"));	
 }
