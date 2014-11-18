@@ -1,0 +1,45 @@
+// rotate an nxn matrix by 90 degrees
+public class question8 
+{
+	static void rotate(int[][] img, int n)
+	{
+		for(int layer = 0; layer < n/2; layer++)
+		{
+			int first = layer;
+			int last = n-1-layer;
+			for(int i = first; i < last; i++)
+			{
+				int offset = i - first;
+				
+				int save = img[first][i];
+				img[first][i] = img[last-offset][first];
+				img[last-offset][first] = img[last][last-offset];
+				img[last][last-offset] = img[i][last];
+				img[i][last] = save;
+			}
+		}
+	}
+
+	public static void main(String[] args) 
+	{	
+		int[][] multi = new int[][]
+				{
+				  { 6, 0, 1, 0, 7},
+				  { 0, 1, 0, 2, 0},
+				  { 2, 0, 5, 0, 4},
+				  { 0, 4, 0, 3, 0},
+				  { 9, 0, 3, 0, 8}
+				};
+		
+		rotate(multi, 5);
+		
+		for(int i = 0; i < multi.length; i++)
+		{
+			for(int j = 0; j < multi[0].length; j++)
+			{
+				System.out.print(multi[i][j]);
+			}
+			System.out.println();
+		}
+	}
+}
