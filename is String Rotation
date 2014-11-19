@@ -1,0 +1,55 @@
+// Check if a string is a rotation of the other.
+
+public class question10 
+{
+	static boolean isRotation(String s1, String s2)
+	{
+		if(s1 == null || s2 == null)
+		{
+			return false;
+		}
+		if(s1.length() != s2.length())
+		{
+			return false;
+		}
+		
+		String concat = s2 + s2;
+		
+		return isSubstring(s1, concat);
+		
+	}
+	
+	static boolean isSubstring(String shortString, String longString)
+	{
+		if(shortString == null || longString == null)
+		{
+			return false;
+		}
+		if(shortString.isEmpty())
+		{
+			return true;
+		}
+		if(longString.length() < shortString.length())
+		{
+			return false;
+		}
+		
+		for(int i=0; i+shortString.length()<=longString.length(); i++)
+		{
+			if(longString.substring(i, i+shortString.length()).equals(shortString))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static void main(String[] args) 
+	{	
+		String s1 = "alibaba";
+		String s2 = "baaliba";
+		
+		System.out.println(isRotation(s1,s2));
+	}
+
+}
