@@ -1,12 +1,4 @@
-public class Node {
-	
-	public Node next;
-	public int value;
-	
-	public Node(int val){
-		value = val;
-	}
-}
+// Linked list add, insert, delete, get
 
 public class LinkedList {
 	
@@ -33,6 +25,27 @@ public class LinkedList {
 		
 		n.next= new Node(newValue);
 		size++;
+	}
+	
+	public Node get(int i){
+		
+		if(i >= size){
+			throw new IndexOutOfBoundsException();
+		}
+		
+		int index = 0;
+		
+		Node n = head;
+		while(n != null){
+			if(index == i){
+				return n;
+			}
+			n = n.next;
+			index++;
+		}
+		
+		return null;
+
 	}
 	
 	public void delete(int deleteValue){
@@ -106,8 +119,9 @@ public class LinkedList {
 		list.add(1);
 		list.add(2);
 	    	list.insert(100, 3);
-		list.delete(2);
+	    	list.delete(2);
 		System.out.println(list);
 		System.out.println(list.size);
+		System.out.println(list.get(2).value);
 	}
 }
