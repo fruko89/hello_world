@@ -1,0 +1,113 @@
+public class Node {
+	
+	public Node next;
+	public int value;
+	
+	public Node(int val){
+		value = val;
+	}
+}
+
+public class LinkedList {
+	
+	public Node head;
+	public int size;
+	
+	public LinkedList(){
+		size = 0;
+	}
+		
+	public void add(int newValue){
+		
+		if(size == 0){
+			head = new Node(newValue);
+			size++;
+			return;
+		}
+		
+		Node n = head;
+		
+		while(n.next != null){
+			n = n.next;
+		}
+		
+		n.next= new Node(newValue);
+		size++;
+	}
+	
+	public void delete(int deleteValue){
+		
+		if(size == 0){
+			return;
+		}
+		
+		if(deleteValue == head.value){
+			head = head.next;
+			size--;
+			return;
+		}
+		
+		Node n = head;
+		
+		while(n.next != null){
+			if(n.next.value == deleteValue){
+				n.next = n.next.next;
+				return;
+			}
+			n = n.next;
+		}
+		size--;
+	}
+	
+	public void insert(int insertValue, int index){
+		
+		if(index > size){
+			throw new IndexOutOfBoundsException();
+		}
+		
+		Node insertNode = new Node(insertValue);
+		
+		if(index == 0){
+			insertNode.next = head;
+			head = insertNode;
+			size++;
+			return;
+		}
+		
+		Node n = head;
+		int i = 1;
+		while(n.next != null && i != index){
+			n = n.next;
+			i++;
+		}
+		
+		insertNode.next = n.next;
+		n.next = insertNode;
+		
+		size++;
+	}
+	
+	public String toString(){
+		String s = "[";
+		Node n = head;
+		s+=n.value;
+		while (n.next != null){
+			n = n.next; 
+			s+=", " + n.value;
+		}
+		s+="]";		
+		return s;
+	}
+	
+	public static void main(String[] args){
+		
+		LinkedList list = new LinkedList();
+		list.add(0);
+		list.add(1);
+		list.add(2);
+	    list.insert(100, 3);
+	    list.delete(2);
+		System.out.println(list);
+		System.out.println(list.size);
+	}
+}
