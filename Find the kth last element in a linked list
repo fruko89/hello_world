@@ -1,0 +1,55 @@
+// Find the kth last element in a linked list.
+
+public class question12 {
+
+	static Node findKthLastElement(Node head, int k){
+		
+		int size = 0;
+		Node n = head;
+		while(n != null){
+			size++;
+			n = n.next;
+		}
+		
+		n = head;
+		for(int i = 0; i < size-k; i++){
+			n = n.next;
+		}
+		
+		return n;	
+	}
+	
+	// Recursive
+	static Node findKthLastElementRec(Node head, int k, IntWrapper i){
+		
+		if(head == null){
+			return head;
+		}
+		
+		Node n = findKthLastElementRec(head.next, k, i);
+		
+		i.val++;
+		if(i.val == k){
+			return head;
+		}
+		
+		return n;
+	}
+	
+	public static void main(String[] args) {
+		LinkedList list = new LinkedList();
+		list.add(0);
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		Node n1 = findKthLastElement(list.head, 2);
+		Node n2 = findKthLastElementRec(list.head, 2, new IntWrapper());
+		System.out.println(n1.value);
+		System.out.println(n2.value);
+	}
+}
+
+class IntWrapper{
+	public int val = 0;
+}
