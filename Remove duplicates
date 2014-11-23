@@ -1,0 +1,63 @@
+//Remove duplicates in a linked list
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class question11 {
+
+	public static void removeDups(Node head){
+		
+		if(head == null){
+			return;
+		}
+		
+		Set<Integer> existingValues = new HashSet<Integer>();
+				
+		Node n = head;
+		Node prev = n;
+
+		while(n != null){
+			if(existingValues.contains(n.value)){
+				prev.next = n.next;
+			}else{
+				existingValues.add(n.value);
+				prev = n;
+			}
+			n = n.next;
+		}
+	}
+	
+	// No buffer version
+	public static void removeDupsNoBuffer(Node head){
+		
+		Node n = head;
+		while(n != null){
+			
+			Node m = n.next;
+			Node prev = n;
+			while(m != null){
+				if(m.value == n.value){
+					prev.next = m.next; 
+				} else{
+					prev = m;
+				}
+				m = m.next;
+			}
+			n = n.next;
+		}
+		
+	}
+
+	public static void main(String[] args) {
+		LinkedList list = new LinkedList();
+		list.add(0);
+		list.add(1);
+		list.add(0);
+		list.add(1);
+		list.add(3);
+		removeDups(list.head);
+		removeDupsNoBuffer(list.head);
+		System.out.println(list);
+
+	}
+}
