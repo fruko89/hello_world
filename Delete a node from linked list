@@ -1,0 +1,30 @@
+
+// Delete a node from a linked list given only acces to that node. (The node is in the middle of the list)
+
+public class question13 {
+
+	static void delete(Node n){
+		
+		if(n == null || n.next == null){
+			throw new IllegalStateException();
+		}
+		n.value = n.next.value;
+		n.next = n.next.next;
+			
+	}
+	
+	public static void main(String[] args) {
+		
+		LinkedList list = new LinkedList();
+		list.add(0);
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		
+		delete(list.get(1));
+		System.out.println(list);
+		
+	}
+
+}
