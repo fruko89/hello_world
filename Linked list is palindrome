@@ -1,0 +1,47 @@
+// Check to see if a linked list is a palindrome
+
+import java.util.Stack;
+
+public class question17 {
+
+
+	static boolean isPalindrome(Node head){
+		
+		if(head == null){
+			throw new IllegalStateException();
+		}
+		
+		Stack<Node> nodeStack = new Stack<Node>();
+		
+		Node n = head;
+		while(n != null){
+            nodeStack.push(n);			
+			n = n.next;
+		}
+		
+		n = head;
+		while(n != null){
+            if(nodeStack.pop().value != n.value){
+            	return false;
+            }
+			n = n.next;
+		}
+		
+		return true;
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		LinkedList list = new LinkedList();
+		list.add(0);
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(2);
+		list.add(1);
+		list.add(0);
+		System.out.print(isPalindrome(list.head));
+
+	}
+}
