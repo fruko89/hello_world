@@ -1,0 +1,74 @@
+// Partition a linked list around a number
+
+public class question14 {
+
+	static void partition (int val, LinkedList list){
+
+		if(list.head == null){
+			throw new IllegalStateException();
+		}
+		
+		Node list1 = null;
+		Node list1Head = null;
+		Node list2 = null;
+		Node list2Head = null;
+		Node n = list.head;
+
+		while(n != null){
+			if(n.value < val){
+				if(list1Head == null){
+					list1Head = n;
+					list1 = list1Head;
+				}
+				else{
+					Node prev = list1;
+					list1 = n;
+					prev.next = list1;
+				}
+			}
+			else{
+				if(list2Head == null){
+					list2Head = n;
+					list2 = list2Head;
+				}
+				else{
+					Node prev = list2;
+					list2 = n;
+					prev.next = list2;
+				}
+			}
+
+			n = n.next;
+		}
+		
+		if(list1Head == null){
+			list2.next = null;
+			list.head = list2Head;
+		}
+		else if(list2Head == null){
+			list1.next = null;
+			list.head = list1Head;
+		}
+		else{
+			list2.next = null;
+			list1.next = list2Head;
+			list.head = list1Head;
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		LinkedList list = new LinkedList();
+		list.add(0);
+		list.add(1);
+		list.add(0);
+		list.add(-5);
+		list.add(3);
+		list.add(-100);
+		partition(-1, list);
+
+		System.out.print(list);
+	}
+
+}
