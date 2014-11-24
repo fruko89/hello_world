@@ -1,0 +1,135 @@
+// Add two linked lists like this: 1 -> 2 -> 1  +  0 -> 0 -> 2 = 1 -> 2 > 3
+
+public class question15 {
+
+
+	static Node sum(Node num1, Node num2){
+
+		if(num1 == null || num2 == null){
+			throw new IllegalStateException();
+		}
+
+		int carry = 0;
+		int sum =0;
+		Node sumHead = null;
+		Node sumList = null;
+
+		while(num1 != null && num2 != null){
+			sum = (num1.value + num2.value) % 10 + carry;
+			carry = (num1.value + num2.value) / 10;
+
+			if(sumList == null){
+				sumHead = new Node(sum);
+				sumList = sumHead;
+			}
+			else{
+				Node newNode = new Node(sum);
+				sumList.next = newNode;
+				sumList = newNode;
+			}
+
+			num1 = num1.next;
+			num2 = num2.next;
+		}
+
+		while(num1 != null){
+			sum = num1.value + carry;
+			carry = 0;
+
+			Node newNode = new Node(sum);
+			sumList.next = newNode;
+			sumList = newNode;
+			
+			num1 = num1.next;
+		}
+
+		while(num2 != null){
+			sum = num2.value + carry;
+			carry = 0;
+
+			Node newNode = new Node(sum);
+			sumList.next = newNode;
+			sumList = newNode;
+			
+			num2 = num2.next;
+		}
+
+		return sumHead;
+	}
+	
+	// Add two linked lists like this: 1 -> 2 -> 1  +  2 -> 0 -> 0 = 3 -> 2 > 1
+	
+	static Node sumReverse(Node num1, Node num2){
+		if(num1 == null || num2 == null){
+			throw new IllegalStateException();
+		}
+		
+		StringBuffer sb1 = new StringBuffer();
+		
+		while(num1 != null){
+			
+			sb1.append(num1.value);
+			
+			num1 = num1.next;
+		}
+		
+		StringBuffer sb2 = new StringBuffer();
+		
+		while(num2 != null){
+			
+			sb2.append(num2.value);
+			
+			num2 = num2.next;
+		}
+
+		int sum = Integer.valueOf(sb1.toString()) + Integer.valueOf(sb2.toString());
+		
+		Node sumList = null;
+		Node sumListHead = null;
+		
+		int pow = 0;
+		
+		while(sum/(int)Math.pow(10, pow) != 0){
+			pow++;
+		}
+		pow--;
+		
+		while(pow >= 0){
+			int digit = sum/(int)Math.pow(10,pow);
+			sum %= (int)Math.pow(10,pow);
+			
+			if(sumList == null){
+				sumListHead = new Node(digit);
+				sumList = sumListHead;
+			}
+			else{
+				Node newDigit = new Node(digit);
+				sumList.next = newDigit;
+				sumList = newDigit;
+			}
+			
+			pow--;
+		}
+		
+		return sumListHead;
+	}
+
+	public static void main(String[] args) {
+
+		LinkedList num1 = new LinkedList();
+		num1.add(0);
+		num1.add(9);
+		num1.add(2);
+		LinkedList num2 = new LinkedList();
+		num2.add(5);
+		num2.add(4);
+
+		LinkedList sum = new LinkedList();
+		sum.head = sum(num1.head, num2.head);
+		System.out.println(sum);
+		
+		sum.head = sumReverse(num1.head, num2.head);
+		System.out.println(sum);
+
+	}
+}
