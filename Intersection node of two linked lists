@@ -1,0 +1,77 @@
+// Get the intersection node of two merging linked lists
+
+public class question18 {
+	
+	static Node getIntersection(Node head1, Node head2){
+			
+		Node n1 = head1;
+		
+		int size1 = 0;
+		while(n1 != null){
+
+			size1++;
+			n1 = n1.next;
+		}
+		
+		Node n2 = head2;
+		
+		int size2 = 0;
+		while(n2 != null){
+
+			size2++;
+			n2 = n2.next;
+		}
+		
+		Node runner = null;
+		Node backer = null;
+		
+		if(size1 - size2 >= 0){
+		    runner = head1;
+		    backer = head2;
+		    
+		}
+		else{
+			runner = head2;
+			backer = head1;
+		}
+		
+		int diff = Math.abs(size1 - size2);
+		for(int i = 0; i < diff; i++){
+			runner = runner.next;
+		}
+		
+		while(runner != null && backer != null){
+			
+			if(runner == backer){
+				return runner;
+			}
+			
+			runner = runner.next;
+			backer = backer.next;
+		}
+		return null;	
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		LinkedList list = new LinkedList();
+		list.add(0);
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		list.add(5);
+		list.add(6);
+		LinkedList list2 = new LinkedList();
+		list2.add(4);
+		list2.add(5);
+		list2.add(6);
+
+		list2.get(2).next= list.get(1);
+		
+		Node inter = getIntersection(list.head, list2.head);
+		System.out.print(inter.value);
+	}
+
+}
