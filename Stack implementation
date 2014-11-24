@@ -1,0 +1,51 @@
+// Pop, push, peek
+
+public class Stack {
+
+	public Node top;
+	public int size;
+	
+	public Stack(){
+		size = 0;
+	}
+
+	public Stack(Node t){
+		top = t;
+		size = 1;
+	}
+
+	public void push(int val){
+
+		Node n = new Node(val);
+		n.next = top;
+		top = n;
+		size++;
+	}
+
+	public Node pop(){
+
+		if(top != null){
+			Node n = top;
+			top = top.next;
+			size--;
+			return n;
+		}
+
+		return null;
+	}
+	
+	public Node peek(){
+		return top;
+	}
+}
+
+public class Node {
+
+	public Node next;
+	public int value;
+	
+	public Node(int val){
+		value = val;
+	}
+
+}
