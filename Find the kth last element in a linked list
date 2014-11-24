@@ -19,6 +19,7 @@ public class question12 {
 		return n;	
 	}
 	
+	// Recursive
 	static Node findKthLastElementRec(Node head, int k, Counter i){
 		
 		if(head == null){
