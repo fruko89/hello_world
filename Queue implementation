@@ -1,0 +1,54 @@
+// dequeue, enqueue
+
+public class Queue {
+	
+	public Node first, last;
+	public int size;
+
+	public Queue(){
+		first = last = null;
+		size = 0;
+	}
+	
+	public Queue(Node f){
+		first = last = f;
+		size = 1;
+	}
+
+	public void enqueue(int val){
+		
+		Node n = new Node(val);
+		if(first == null){
+			first = last = n;
+		}
+		else{
+			last.next = n;
+			last = last.next;
+		}
+		size++;
+	}
+	
+	public Node dequeue(){
+		if(first == null){
+			return null;
+		}
+		else{
+			Node n = first;
+			first = first.next;
+			size--;
+			return n;
+			
+		}
+	}
+}
+
+public class Node {
+
+	public Node next;
+	public int value;
+	
+	public Node(int val){
+		value = val;
+	}
+
+}
