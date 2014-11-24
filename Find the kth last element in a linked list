@@ -19,8 +19,7 @@ public class question12 {
 		return n;	
 	}
 	
-	// Recursive
-	static Node findKthLastElementRec(Node head, int k, IntWrapper i){
+	static Node findKthLastElementRec(Node head, int k, Counter i){
 		
 		if(head == null){
 			return head;
@@ -28,11 +27,11 @@ public class question12 {
 		
 		Node n = findKthLastElementRec(head.next, k, i);
 		
-		i.val++;
-		if(i.val == k){
+		i.count++;
+		if(i.count == k){
 			return head;
 		}
-		
+	
 		return n;
 	}
 	
@@ -44,12 +43,12 @@ public class question12 {
 		list.add(3);
 		list.add(4);
 		Node n1 = findKthLastElement(list.head, 2);
-		Node n2 = findKthLastElementRec(list.head, 2, new IntWrapper());
+		Node n2 = findKthLastElementRec(list.head, 2, new Counter());
 		System.out.println(n1.value);
 		System.out.println(n2.value);
 	}
 }
 
-class IntWrapper{
-	public int val = 0;
+class Counter{
+	public int count = 0;
 }
