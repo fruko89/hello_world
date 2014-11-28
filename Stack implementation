@@ -22,6 +22,10 @@ public class Stack {
 		return size;
 	}
 	
+	public boolean isEmpty(){
+		return size == 0;
+	}
+	
 	public void push(int val){
 
 		Node n = new Node(val);
