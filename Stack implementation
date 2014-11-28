@@ -38,7 +38,7 @@ public class Stack {
 
 		if(top != null){
 			Node n = top;
-			top.setNext(top.getNext());
+			top = top.getNext();
 			size--;
 			return n;
 		}
