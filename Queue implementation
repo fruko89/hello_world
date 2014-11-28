@@ -27,6 +27,10 @@ public class Queue {
 		size = 1;
 	}
 	
+	public boolean isEmpty(){
+		return size == 0;
+	}
+	
 	public void enqueue(int val){
 		
 		Node n = new Node(val);
