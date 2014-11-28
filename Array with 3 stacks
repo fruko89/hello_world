@@ -1,0 +1,75 @@
+// Implement 3 stacks using an array
+
+public class StackArray {
+
+	private int stackSizeLimit;
+	private int[] bufferArray;
+	private int[] stackSizes;
+	
+	public StackArray(int sizeLimit){
+		stackSizeLimit = sizeLimit;
+		bufferArray = new int[3*stackSizeLimit];
+		stackSizes = new int[3];
+	}
+	
+	
+	public void push(int stackNum, int value) throws Exception{
+		if(stackSizes[stackNum] >= stackSizeLimit){
+			throw new Exception("Stack is full");
+		}
+		
+		int index = stackSizeLimit * stackNum + stackSizes[stackNum]++;
+		bufferArray[index] = value;
+	}
+	
+	public int pop(int stackNum) throws Exception{
+		
+		if(stackSizes[stackNum] == 0){
+			throw new Exception("Stack is empty");
+		}
+		
+		int index = stackSizeLimit * stackNum + --stackSizes[stackNum];
+		int value = bufferArray[index];
+		bufferArray[index] = 0;
+		
+		return value;
+	}
+	
+	public int peek(int stackNum){
+	
+		int index = stackSizeLimit * stackNum + stackSizes[stackNum] - 1;
+		return bufferArray[index];
+	}
+	
+	public boolean isEmpty(int stackNum)
+	{
+		return stackSizes[stackNum] == 0;
+	}
+	
+	public String toString(int stackNum){
+		String s = "";
+		for(int i = stackSizeLimit * stackNum; i < stackSizeLimit * stackNum + stackSizes[stackNum]; i++){
+			s+=bufferArray[i] + " ";
+		}
+		return s;
+	}
+
+	public static void main(String[] args) throws Exception {
+		
+		StackArray sArr = new StackArray(3);
+		sArr.push(0, 100);
+		sArr.push(0, 190);
+		sArr.push(0, 160);
+		sArr.push(2, 10);
+		sArr.push(2, 180);
+		sArr.push(1, 100);
+		sArr.push(1, 78);
+		
+		sArr.pop(0);
+		sArr.pop(1);
+		sArr.pop(0);
+		
+		System.out.println(sArr.isEmpty(0));		
+			
+	}
+}
