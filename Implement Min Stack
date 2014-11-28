@@ -1,0 +1,120 @@
+// Create a stack that keeps track of the min "everything should be O(1) time"
+
+public class MinStack {
+	
+	private Stack innerStack;
+	private Stack minStack;
+	
+	public MinStack(Node first){
+		innerStack = new Stack(first);
+		minStack = new Stack(first);
+	}
+	
+	public MinStack(){
+		innerStack = new Stack();
+		minStack = new Stack();
+	}
+	
+	public void push(int val){
+		if (minStack.getSize() == 0 || val <= minStack.peek().getValue()){
+			minStack.push(val);
+		}
+		innerStack.push(val);
+	}
+	
+	public Node pop(){
+		
+		if(innerStack.peek().getValue() == minStack.peek().getValue()){
+			minStack.pop();
+		}
+		return innerStack.pop();
+	}
+	
+	public Node peek(){
+		return innerStack.peek();
+	}
+	
+	public boolean isEmpty(){
+		return innerStack.isEmpty();
+	}
+	
+	public int getMin(){
+		return minStack.peek().getValue();
+	}
+	
+	public String toString(){
+		return innerStack.toString();
+	}
+
+	public static void main(String[] args) {
+		
+		MinStack m = new MinStack();
+		m.push(10);
+		m.push(-9);
+		m.push(9);
+		m.push(100);
+		m.push(-10000);
+		m.push(-9);
+		m.pop();
+		m.peek();
+		
+		System.out.print(m.getMin());
+	}
+}
+
+class Stack {
+
+	private Node top;
+	private int size;
+	
+	public Stack(){
+		size = 0;
+	}
+
+	public Stack(Node t){
+		top = t;
+		size = 1;
+	}
+	
+	public int getSize(){
+		return size;
+	}
+	
+	public void push(int val){
+
+		Node n = new Node(val);
+		n.setNext(top);
+		top = n;
+		size++;
+	}
+
+	public Node pop(){
+
+		if(top != null){
+			Node n = top;
+			top = top.getNext();
+			size--;
+			return n;
+		}
+
+		return null;
+	}
+	
+	public Node peek(){
+		return top;
+	}
+	
+	public boolean isEmpty(){
+		return size == 0;
+	}
+	
+	public String toString(){
+		String s = "";
+		Node n = top;
+		while(n != null){
+			s+= n.getValue() + " ";
+			n = n.getNext();
+		}
+		return s;
+	}
+}
