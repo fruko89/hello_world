@@ -2,8 +2,8 @@
 
 public class Stack {
 
-	public Node top;
-	public int size;
+	private Node top;
+	private int size;
 	
 	public Stack(){
 		size = 0;
@@ -13,11 +13,19 @@ public class Stack {
 		top = t;
 		size = 1;
 	}
-
+	
+	public Node getTop(){
+		return top;
+	}
+	
+	public int getSize(){
+		return size;
+	}
+	
 	public void push(int val){
 
 		Node n = new Node(val);
-		n.next = top;
+		n.setNext(top);
 		top = n;
 		size++;
 	}
@@ -26,7 +34,7 @@ public class Stack {
 
 		if(top != null){
 			Node n = top;
-			top = top.next;
+			top.setNext(top.getNext());
 			size--;
 			return n;
 		}
@@ -39,13 +47,28 @@ public class Stack {
 	}
 }
 
-public class Node {
+class Node {
 
-	public Node next;
-	public int value;
+	private Node next;
+	private int value;
 	
 	public Node(int val){
 		value = val;
 	}
-
+	
+	public Node getNext(){
+		return next;
+	}
+	
+	public void setNext(Node n){
+		next = n;
+	}
+	
+	public int getValue(){
+		return value;
+	}
+	
+	public void setValue(int val){
+		value = val;
+	}
 }
