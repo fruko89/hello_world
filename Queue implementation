@@ -2,19 +2,31 @@
 
 public class Queue {
 	
-	public Node first, last;
-	public int size;
+	private Node first, last;
+	private int size;
 
 	public Queue(){
 		first = last = null;
 		size = 0;
 	}
 	
+	public int getSize(){
+		return size;
+	}
+	
+	public Node getFirst(){
+		return first;
+	}
+	
+	public Node getLast(){
+		return last;
+	}
+	
 	public Queue(Node f){
 		first = last = f;
 		size = 1;
 	}
-
+	
 	public void enqueue(int val){
 		
 		Node n = new Node(val);
@@ -22,8 +34,8 @@ public class Queue {
 			first = last = n;
 		}
 		else{
-			last.next = n;
-			last = last.next;
+			last.setNext(n);
+			last = last.getNext();
 		}
 		size++;
 	}
@@ -34,7 +46,7 @@ public class Queue {
 		}
 		else{
 			Node n = first;
-			first = first.next;
+			first = first.getNext();
 			size--;
 			return n;
 			
@@ -42,13 +54,30 @@ public class Queue {
 	}
 }
 
-public class Node {
 
-	public Node next;
-	public int value;
+class Node {
+
+	private Node next;
+	private int value;
 	
 	public Node(int val){
 		value = val;
 	}
-
+	
+	public Node getNext(){
+		return next;
+	}
+	
+	public void setNext(Node n){
+		next = n;
+	}
+	
+	public int getValue(){
+		return value;
+	}
+	
+	public void setValue(int val){
+		value = val;
+	}
 }
+
