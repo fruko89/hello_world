@@ -14,16 +14,8 @@ public class Stack {
 		size = 1;
 	}
 	
-	public Node getTop(){
-		return top;
-	}
-	
 	public int getSize(){
 		return size;
-	}
-	
-	public boolean isEmpty(){
-		return size == 0;
 	}
 	
 	public void push(int val){
@@ -48,6 +40,20 @@ public class Stack {
 	
 	public Node peek(){
 		return top;
+	}
+	
+	public boolean isEmpty(){
+		return size == 0;
+	}
+	
+	public String toString(){
+		String s = "";
+		Node n = top;
+		while(n != null){
+			s+= n.getValue() + " ";
+			n = n.getNext();
+		}
+		return s;
 	}
 }
 
