@@ -2,19 +2,19 @@
 
 import java.util.Stack;;
 
-public class Tower {
+public class Tower<T> {
 
-	private Stack<Integer> disks;
+	private Stack<T> disks;
 	
 	public Tower(){
-		disks = new Stack<Integer>();
+		disks = new Stack<T>();
 	}
 	
-	public Stack<Integer> getDisks(){
+	public Stack<T> getDisks(){
 		return disks;
 	}
 	
-	public void push(Integer i){
+	public void push(T i){
 		disks.push(i);
 	}
 	
@@ -22,12 +22,12 @@ public class Tower {
 		disks.pop();
 	}
 	
-	public void popAndMoveto(Tower destination){
-		Integer stackBase = disks.pop();
+	public void popAndMoveto(Tower<T> destination){
+		T stackBase = disks.pop();
 		destination.getDisks().push(stackBase);
 	}
 	
-	private void moveDisks(int n, Tower destination, Tower buffer){
+	private void moveDisks(int n, Tower<T> destination, Tower<T> buffer){
 		if( n <= 0){
 			return;
 		}
@@ -36,7 +36,7 @@ public class Tower {
 		buffer.moveDisks(n - 1, destination, this);
 	}
 	
-	public void moveDisks(Tower destination, Tower buffer){
+	public void moveDisks(Tower<T> destination, Tower<T> buffer){
 		moveDisks(disks.size(), destination, buffer);
 	}
 	
@@ -45,14 +45,14 @@ public class Tower {
 	}
 	
 	public static void main(String[] args) {
-		Tower one = new Tower ();
+		Tower<Integer> one = new Tower<Integer> ();
 		one.push(1);
 		one.push(2);
 		one.push(3);
 		one.push(4);
 		
-		Tower two = new Tower ();
-		Tower three = new Tower ();
+		Tower<Integer> two = new Tower<Integer> ();
+		Tower<Integer> three = new Tower<Integer> ();
 		
 		one.moveDisks(three, two);
 		
@@ -60,4 +60,6 @@ public class Tower {
 		System.out.println(two);
 		System.out.println(three);
 	}
+
 }
+
