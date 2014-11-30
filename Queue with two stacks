@@ -1,0 +1,59 @@
+// Implement a queue using 2 stacks
+
+import java.util.Stack;;
+
+public class MyQueue<T> {
+
+	private Stack<T> newOnTop;
+	private Stack<T> oldOnTop;
+	private T head, tail;
+	
+	public MyQueue(){
+		newOnTop = new Stack<T>();
+		oldOnTop = new Stack<T>();
+		head = tail = null;
+	}
+
+	public void enqueue(T val){
+		newOnTop.push(val);
+		tail = newOnTop.peek();	
+		if(getSize() == 1){
+			head = tail;
+		}
+	}
+	
+	public T dequeue(){
+		rearrange();
+		T popped = oldOnTop.pop();
+		head = oldOnTop.peek();
+		return popped;
+	}
+	
+	public int getSize(){
+		return newOnTop.size() + oldOnTop.size();
+	}
+	
+	public T getFirst(){
+		return head;
+	}
+	
+	public T getLast(){
+		return tail;
+	}
+	
+	private void rearrange(){
+		if(oldOnTop.isEmpty()){
+			while(!newOnTop.isEmpty()){
+				oldOnTop.push(newOnTop.pop());
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		MyQueue<Integer> q = new MyQueue<Integer>();
+		q.enqueue(1);
+		q.enqueue(2);
+		q.enqueue(3);
+		q.dequeue();
+	}
+}
