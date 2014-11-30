@@ -1,0 +1,196 @@
+// Implement a set of stacks where there is a size limit for each contained stack and if that size is reached in the last
+// stack in the set a new stack is created.
+// FOLLOW UP: Implement a popAt(i) function where you pop from "i"th stack and reorder the entire set of stacks so that each
+// each stack in the set is still filled up to the maximum limit till you hit the last one. 
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SetOfStacks {
+
+	private List<Stack> stackList;
+	private int stackSize;
+	private int sizeLimit;
+
+	public SetOfStacks(int limit){
+		stackList = new ArrayList<Stack>();
+		stackList.add(new Stack());
+		stackSize = 0;
+		sizeLimit = limit;
+	}
+
+	public Node pop(){
+	
+		Node popped = stackList.get(stackList.size() - 1).pop();
+		removeEmptyLastStack();	
+		if(stackSize != 0){
+			stackSize--;
+		}
+		return popped;
+	}
+
+	public void push(int val){
+		if(stackList.get(stackList.size() - 1).getSize() == sizeLimit){
+			stackList.add(new Stack());
+		}
+		stackList.get(stackList.size() - 1).push(val);
+		stackSize++;	
+	}
+
+	public Node peek(){
+		return stackList.get(stackList.size() - 1).peek();
+	}
+
+	public boolean isEmpty(){
+		return stackList.get(0).isEmpty();
+	}
+
+	public Node popAt(int stackIndex) throws Exception{
+
+		if(stackIndex >= stackList.size()){
+			throw new Exception("Stack at given index does not exist");
+		}
+
+		Node popped = stackList.get(stackIndex).pop();
+		stackList = reorder(stackList, stackIndex);
+		removeEmptyLastStack();
+		if(stackSize != 0){
+			stackSize--;
+		}
+		return popped;
+	}
+
+  public int getSize(){
+    return stackSize;
+  }
+
+	public String toString(){
+		String str="";
+		for(Stack s : stackList){
+			str+=s.toString()+"\n";
+		}
+		return str;
+	}
+
+	private List<Stack> reorder(List<Stack> stackList, int index){
+
+		while(++index < stackList.size()){
+			Node lastNode = stackList.get(index).popLast();
+			stackList.get(index - 1).push(lastNode.getValue());
+		}
+		return stackList;
+	}
+
+	private void removeEmptyLastStack(){
+		if(stackList.size() - 1 != 0 && stackList.get(stackList.size() -1).isEmpty()){
+			stackList.remove(stackList.size() - 1);
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		SetOfStacks stacks = new SetOfStacks(3);
+		stacks.pop();
+		stacks.push(1);
+		stacks.push(2);
+		stacks.push(3);
+		stacks.push(4);
+		stacks.push(5);
+		stacks.push(6);
+		stacks.push(7);
+		stacks.push(8);
+		stacks.push(9);
+		stacks.pop();
+		stacks.popAt(0);
+		stacks.popAt(1);
+		stacks.pop();
+		stacks.popAt(0);
+		stacks.popAt(0);
+		stacks.pop();
+		stacks.popAt(0);
+	  stacks.popAt(0);
+		System.out.print(stacks);
+	}
+}
+
+class Stack {
+
+	private Node top;
+	private int size;
+	
+	public Stack(){
+		size = 0;
+	}
+
+	public Stack(Node t){
+		top = t;
+		size = 1;
+	}
+	
+	public int getSize(){
+		return size;
+	}
+		
+	public void push(int val){
+
+		Node n = new Node(val);
+		n.setNext(top);
+		top = n;
+		size++;
+	}
+
+	public Node pop(){
+
+		if(top != null){
+			Node n = top;
+			top = top.getNext();
+			size--;
+			return n;
+		}
+
+		return null;
+	}
+	
+	public Node popLast(){
+		
+		Node last = null;
+		Node n = top;
+		
+		if(size == 1){
+			top = top.getNext();
+			size--;
+			return n;
+		}
+		
+		while(n.getNext() != null){
+			if(n.getNext().getNext() == null){
+				last = n.getNext();
+				n.setNext(n.getNext().getNext());
+				size--;
+				return last;
+			}
+			n = n.getNext();
+		}
+		
+		return last;
+	}
+	
+	public Node peek(){
+		return top;
+	}
+	
+	public boolean isEmpty(){
+		return size == 0;
+	}
+	
+	public String toString(){
+		String s = "";
+		Node n = top;
+		while(n != null){
+			s+= n.getValue() + " ";
+			n = n.getNext();
+		}
+		return s;
+	}
+}
