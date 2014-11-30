@@ -1,0 +1,66 @@
+import java.util.Stack;
+
+public class StackSorter {
+
+	public static Stack<Integer> sort(Stack<Integer> stack){
+		Stack<Integer> buffer = new Stack<Integer>();
+		while(!stack.isEmpty()){
+			Integer temp = stack.pop();
+			while(!buffer.isEmpty() && temp > buffer.peek()){
+				stack.push(buffer.pop());
+			}
+			buffer.push(temp);
+		}
+		return buffer;
+	}
+
+	public static Stack<Integer> sort2(Stack<Integer> stack){
+		Stack<Integer> buffer = new Stack<Integer>();
+		Stack<Integer> result = new Stack<Integer>();
+
+		int currentMax = Integer.MIN_VALUE;
+		while(!stack.isEmpty()){
+			for(Integer i : stack){
+				if(i >= currentMax){
+					currentMax = i;
+				}
+			}
+			while(stack.peek() != currentMax){
+				buffer.push(stack.pop());
+			}
+			
+			result.push(stack.pop());
+
+			while(!buffer.isEmpty()){
+				stack.push(buffer.pop());
+			}
+			
+			currentMax = Integer.MIN_VALUE;
+		}
+		
+		return result;
+	}
+
+	public static void main(String[] args) {
+
+		Stack<Integer> s = new Stack<Integer>();
+		s.push(2);
+		s.push(1);
+		s.push(10);
+		s.push(2);
+		s.push(8);
+		s.push(-100);
+		
+		Stack<Integer> s2 = new Stack<Integer>();
+		s2.push(2);
+		s2.push(1);
+		s2.push(10);
+		s2.push(2);
+		s2.push(8);
+		s2.push(-100);
+		
+		System.out.println(sort(s));
+		System.out.println(sort2(s2));
+
+	}
+}
