@@ -1,0 +1,63 @@
+// Write a program to move the full ordered stack from the first tower to the third tower in towers on Hanoi. 
+
+import java.util.Stack;;
+
+public class Tower {
+
+	private Stack<Integer> disks;
+	
+	public Tower(){
+		disks = new Stack<Integer>();
+	}
+	
+	public Stack<Integer> getDisks(){
+		return disks;
+	}
+	
+	public void push(Integer i){
+		disks.push(i);
+	}
+	
+	public void pop(){
+		disks.pop();
+	}
+	
+	public void popAndMoveto(Tower destination){
+		Integer stackBase = disks.pop();
+		destination.getDisks().push(stackBase);
+	}
+	
+	private void moveDisks(int n, Tower destination, Tower buffer){
+		if( n <= 0){
+			return;
+		}
+		moveDisks(n - 1, buffer, destination);
+		popAndMoveto(destination);
+		buffer.moveDisks(n - 1, destination, this);
+	}
+	
+	public void moveDisks(Tower destination, Tower buffer){
+		moveDisks(disks.size(), destination, buffer);
+	}
+	
+	public String toString(){
+		return disks.toString();
+	}
+	
+	public static void main(String[] args) {
+		Tower one = new Tower ();
+		one.push(1);
+		one.push(2);
+		one.push(3);
+		one.push(4);
+		
+		Tower two = new Tower ();
+		Tower three = new Tower ();
+		
+		one.moveDisks(three, two);
+		
+		System.out.println(one);
+		System.out.println(two);
+		System.out.println(three);
+	}
+}
