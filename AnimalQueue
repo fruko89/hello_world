@@ -1,0 +1,131 @@
+// Create an animal queue where there are only cats and dogs and you adopt animals from the queue in fifo order. 
+
+import java.util.Date;
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class AnimalQueue {
+
+	private Queue<Cat> catQueue;
+	private Queue<Dog> dogQueue;
+	
+	public AnimalQueue(){
+		catQueue = new LinkedList<Cat>();
+		dogQueue = new LinkedList<Dog>();
+	}
+	
+	
+	public void enqueue(Animal newAnimal){
+		if(newAnimal instanceof Cat){
+			catQueue.add((Cat) newAnimal);
+		} else{
+			dogQueue.add((Dog) newAnimal);
+		}
+	}
+	
+	public Animal dequeueAny(){
+		
+		if(dogQueue.isEmpty() && catQueue.isEmpty()){
+			return null;
+		} else if(dogQueue.isEmpty()){
+			return catQueue.poll();
+		} else if(catQueue.isEmpty()){
+			return dogQueue.poll();
+		} else {
+			Dog lastDog = dogQueue.peek();
+			Cat lastCat = catQueue.peek();
+			
+			if(lastDog.getArrivalTime().compareTo(lastCat.getArrivalTime()) <= 0){
+				return dogQueue.poll();
+			} else{
+				return catQueue.poll();
+			}
+		}
+	}
+	
+	public Cat dequeueCat(){
+		return catQueue.poll();
+	}
+	
+	public Dog dequeueDog(){
+		return dogQueue.poll();
+	}
+	
+	public Queue<Dog> getDogQueue(){
+		return dogQueue;
+	}
+	
+	public Queue<Cat> getCatQueue(){
+		return catQueue;
+	}
+	
+	public boolean isEmpty(){
+		return dogQueue.isEmpty() && catQueue.isEmpty();
+	}
+	
+	public static void main(String[] args) {
+		
+		AnimalQueue q = new AnimalQueue();
+		
+		Date date1 = new Date(1);
+		Cat cat1 = new Cat(date1, "cat1");
+		Date date2 = new Date(2);
+		Cat cat2 = new Cat(date2, "cat2");
+		Date date3 = new Date(3);
+		Cat cat3 = new Cat(date3, "cat3");
+		q.enqueue(cat1);
+		q.enqueue(cat2);
+		q.enqueue(cat3);
+		q.dequeueCat();
+		
+		Date date4 = new Date(4);
+		Dog dog1 = new Dog(date4, "dog1");
+		Date date5 = new Date(5);
+		Dog dog2 = new Dog(date5, "dog2");
+		Date date6 = new Date(6);
+		Dog dog3 = new Dog(date6, "dog3");
+		q.enqueue(dog1);
+		q.enqueue(dog2);
+		q.enqueue(dog3);
+		q.dequeueDog();
+		
+		q.dequeueAny();
+		
+		System.out.println(q.getCatQueue());
+		System.out.println(q.getDogQueue());
+	}
+}
+
+abstract class Animal{
+	
+	protected Date arrivalTime;
+	protected String animalName;
+	
+	
+	public Animal(Date date, String name){
+		arrivalTime = date;
+		animalName = name;
+	}
+	
+	public Date getArrivalTime(){
+		return arrivalTime;
+	}
+	
+	public String toString(){
+		return animalName + " " + arrivalTime;
+	}
+}
+
+class Cat extends Animal{
+
+	public Cat(Date date, String name) {
+		super(date, name);
+	}
+}
+
+class Dog extends Animal{
+
+	public Dog(Date date, String name) {
+		super(date, name);
+	}
+}
