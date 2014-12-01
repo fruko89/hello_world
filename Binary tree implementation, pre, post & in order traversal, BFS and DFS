@@ -1,0 +1,222 @@
+// Binary tree implementation, pre, post & in order traversal, BFS and DFS
+
+import java.util.List;
+import java.util.LinkedList;
+import java.util.ArrayList;
+
+public class BinaryTree {
+
+	private TreeNode root;
+	private int size;
+
+	public BinaryTree(LinkedList<TreeNode> nodes){
+		if(nodes.isEmpty()){
+			return;
+		}
+
+		size = nodes.size();
+		
+		LinkedList<TreeNode> treeQueue = new LinkedList<TreeNode>();
+		root = nodes.poll();
+		treeQueue.add(root);
+
+		while(!nodes.isEmpty() ){
+			TreeNode currentNode = treeQueue.poll();
+
+			currentNode.setLeft(nodes.poll());
+			currentNode.setRight(nodes.poll());
+
+			treeQueue.add(currentNode.getLeft());
+			treeQueue.add(currentNode.getRight());
+		}
+	}
+
+	public TreeNode getRoot(){
+		return root;
+	}
+	
+	public int getSize(){
+		return size;
+	}
+	
+	public int getHeight(){
+		return (int) (Math.log(size) / Math.log(2)) + 1;
+	}
+
+	public LinkedList<TreeNode> getNodesInOrder(){
+		LinkedList<TreeNode> nodes = new LinkedList<TreeNode>();
+		inOrder(root, nodes);
+		return nodes;
+	}
+
+	private void inOrder(TreeNode node, LinkedList<TreeNode> nodes){
+		if(node == null){
+			return;
+		}
+
+		inOrder(node.getLeft(), nodes);
+		nodes.add(node);
+		//node.setVisited(true);
+		inOrder(node.getRight(), nodes);
+
+	}
+
+	public LinkedList<TreeNode> getNodesPreOrder(){
+		LinkedList<TreeNode> nodes = new LinkedList<TreeNode>();
+		preOrder(root, nodes);
+		return nodes;
+	}
+
+	//DFS
+	private void preOrder(TreeNode node, LinkedList<TreeNode> nodes){
+		if(node == null){
+			return;
+		}
+		nodes.add(node);
+		//node.setVisited(true);
+		
+		for(TreeNode n: node.getAdjacents()){
+			if(!n.isVisited()){
+				preOrder(n, nodes);
+			}
+		}
+			
+		//preOrder(node.getLeft(), nodes);
+		//preOrder(node.getRight(), nodes);
+	}
+
+	public LinkedList<TreeNode> getNodesPostOrder(){
+		LinkedList<TreeNode> nodes = new LinkedList<TreeNode>();
+		postOrder(root, nodes);
+		return nodes;
+	}
+
+	private void postOrder(TreeNode node, LinkedList<TreeNode> nodes){
+		if(node == null){
+			return;
+		}
+		postOrder(node.getLeft(), nodes);
+		postOrder(node.getRight(), nodes);
+		nodes.add(node);
+		//node.setVisited(true);
+	}
+
+	//BFS
+	public LinkedList<TreeNode> getNodesLevelOrder(){
+
+		LinkedList<TreeNode> nodes = new LinkedList<TreeNode>();
+		LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+
+		nodes.add(root);
+		//root.setVisited(true);
+
+		queue.add(root);
+
+		while(!queue.isEmpty()){
+			TreeNode current = queue.poll();
+			for(TreeNode n : current.getAdjacents()){
+				if(!n.isVisited()){
+					
+					nodes.add(n);
+					//n.setVisited(true);
+
+					queue.add(n);
+				}
+			}
+		}
+		
+		return nodes;
+	}
+
+	public static void main(String[] args) {
+		LinkedList<TreeNode> nodes = new LinkedList<TreeNode>();
+		nodes.add(new TreeNode(1));
+		nodes.add(new TreeNode(2));
+		nodes.add(new TreeNode(3));
+		nodes.add(new TreeNode(4));
+		nodes.add(new TreeNode(5));
+		nodes.add(new TreeNode(6));
+		nodes.add(new TreeNode(7));
+		nodes.add(new TreeNode(8));
+		nodes.add(new TreeNode(9));
+		nodes.add(new TreeNode(10));
+		nodes.add(new TreeNode(11));
+		nodes.add(new TreeNode(12));
+		nodes.add(new TreeNode(13));
+		nodes.add(new TreeNode(14));
+		nodes.add(new TreeNode(15));
+
+		BinaryTree bt = new BinaryTree(nodes);
+		System.out.println(bt.getNodesPreOrder());
+		System.out.println(bt.getNodesInOrder());
+		System.out.println(bt.getNodesPostOrder());
+		System.out.println(bt.getNodesLevelOrder());
+		System.out.println(bt.getSize());
+		System.out.println(bt.getHeight());
+	}
+}
+
+class TreeNode {
+
+	private int value;
+	private TreeNode left;
+	private TreeNode right;
+	private List<TreeNode> adjacents;
+	private boolean isVisited;
+	
+	public TreeNode(int value){
+		this.value = value;
+		this.adjacents = new ArrayList<TreeNode>();
+		isVisited = false;
+	}
+	
+	public void setLeft(TreeNode left){
+		if(left == null){
+			return;
+		}
+		
+		this.left = left;
+		this.adjacents.add(left);
+	}
+	
+	public void setRight(TreeNode right){
+		if(right == null){
+			return;
+		}
+		
+		this.right = right;
+		this.adjacents.add(right);
+	}
+	
+	public TreeNode getLeft(){
+		return this.left;
+	}
+	
+	public TreeNode getRight(){
+		return this.right;
+	}
+	
+	public void setValue(int value){
+		this.value = value;
+	}
+	
+	public int getValue(){
+		return this.value;
+	}
+	
+	public List<TreeNode> getAdjacents(){
+		return this.adjacents;
+	}
+	
+	public boolean isVisited(){
+		return this.isVisited;
+	}
+	
+	public void setVisited(boolean visited){
+		this.isVisited = visited;
+	}
+	
+	public String toString(){
+		return String.valueOf(value);
+	}
+}
