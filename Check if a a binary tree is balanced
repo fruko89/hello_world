@@ -1,0 +1,236 @@
+// Check if a binary tree is balanced. (3 versions)
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BinaryTree {
+
+	private TreeNode root;
+	private int size;
+	private boolean isBalanced;
+
+	public BinaryTree(TreeNode root) {
+		if (root == null) {
+			return;
+		}
+
+		this.root = root;
+		size = 1;
+		isBalanced = true;
+	}
+	
+	// Version 1
+	public boolean isBalanced3(TreeNode n){
+		return checkHeight(n) != -1;
+	}
+	
+	private int checkHeight(TreeNode n){
+		if(n == null){
+			return 0;
+		}
+		
+		int leftHeight = checkHeight(n.getLeft());
+		if(leftHeight == -1){
+			return -1;
+		}
+		int rightHeight = checkHeight(n.getRight());
+		if(rightHeight == -1){
+			return -1;
+		}
+		
+		int diff = Math.abs(leftHeight - rightHeight);
+		if(diff > 1){
+			return -1;
+		} else {
+			return Math.max(leftHeight, rightHeight) + 1;
+		}	
+	}
+	
+  // Version 2
+	public boolean isBalanced2(TreeNode n) {
+
+		if (n == null) {
+			return true;
+		}
+
+		int heightDiff = Math.abs(getHeight2(n.getLeft()) - getHeight2(n.getRight()));
+		if (heightDiff > 1) {
+			return false;
+		} else {
+			return isBalanced2(n.getLeft()) && isBalanced2(n.getRight());
+		}
+	}
+	
+  private int getHeight2(TreeNode n) {
+		if (n == null) {
+			return 0;
+		}
+		return Math.max(getHeight2(n.getLeft()), getHeight2(n.getRight())) + 1;
+	}
+	
+  // Version 3
+	public boolean isBalanced(TreeNode n) {
+		isBalanced = true;
+		checkBalancedUnder(n;
+		return isBalanced;
+	}
+
+	private void checkBalancedUnder(TreeNode n) {
+
+		if (n != null) {
+			if (Math.abs(getHeight(n.getLeft()) - getHeight(n.getRight())) > 1) {
+				isBalanced = false;
+				return;
+			}
+			checkBalancedUnder(n.getLeft());
+			checkBalancedUnder(n.getRight());
+
+		}
+	}
+
+	public int getHeight(TreeNode n) {
+		return maxValue(getHeights(n));
+	}
+
+	private int maxValue(List<Integer> heights) {
+		if (heights == null || heights.size() == 0) {
+			throw new IllegalStateException();
+		}
+
+		int max = Integer.MIN_VALUE;
+		for (Integer i : heights) {
+			if (i > max) {
+				max = i;
+			}
+		}
+		return max;
+	}
+
+	private List<Integer> getHeights(TreeNode n) {
+		List<Integer> heights = new ArrayList<Integer>();
+		preOrderTraverse(n, n, heights);
+		return heights;
+	}
+	
+	private void preOrderTraverse(TreeNode n, TreeNode startNode, List<Integer> heights) {
+		if (heights == null) {
+			throw new IllegalStateException();
+		}
+
+		if (startNode == null) {
+			heights.add(0);
+			return;
+		}
+
+		if (n != null) {
+			if (n.isLeaf()) {
+				heights.add(n.getDistanceToParent(startNode));
+			}
+			preOrderTraverse(n.getLeft(), startNode, heights);
+			preOrderTraverse(n.getRight(), startNode, heights);
+		}
+	}
+}
+
+class TreeNode {
+
+	private int value;
+	private TreeNode left;
+	private TreeNode right;
+	private TreeNode parent;
+	private List<TreeNode> adjacents;
+	private boolean isVisited;
+
+	public TreeNode(int value) {
+		this.value = value;
+		this.adjacents = new ArrayList<TreeNode>();
+		isVisited = false;
+	}
+
+	public void setLeft(TreeNode left) {
+
+		this.left = left;
+		if (left != null) {
+			left.parent = this;
+			this.adjacents.add(left);
+		}
+
+	}
+
+	public void setRight(TreeNode right) {
+
+		this.right = right;
+		if (right != null) {
+			right.parent = this;
+			this.adjacents.add(right);
+		}
+	}
+
+	public TreeNode getLeft() {
+		return this.left;
+	}
+
+	public TreeNode getRight() {
+		return this.right;
+	}
+
+	public TreeNode getParent() {
+		return this.parent;
+	}
+
+	public void setParent(TreeNode parent) {
+		this.parent = parent;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public int getValue() {
+		return this.value;
+	}
+
+	public List<TreeNode> getAdjacents() {
+		return this.adjacents;
+	}
+
+	public boolean isVisited() {
+		return this.isVisited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.isVisited = visited;
+	}
+	
+	public boolean isLeaf() {
+		return this.getLeft() == null && this.getRight() == null;
+	}
+	
+	public int getDistanceToRoot(){
+		TreeNode n = this;
+		int height = 0;
+		while(n != null) {
+			height++;
+			n = n.getParent();
+		}
+		return height;
+	}
+	
+	public int getDistanceToParent(TreeNode parent){
+		
+		TreeNode n = this;
+		int height = 0;
+		while(n != null) {
+			height++;
+			if(n == parent){
+				return height;
+			}
+			n = n.getParent();
+		}
+		return -1;	
+	}
+	
+	public String toString() {
+		return String.valueOf(value);
+	}
+}
