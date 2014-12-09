@@ -1,0 +1,25 @@
+// Create a balanced bst from a sorted array of values.
+
+public class BinarySearchTree {
+
+	private TreeNode root;
+	private int size;
+
+	public BinarySearchTree(int[] nodes) {
+		this.root = bstRec(nodes, 0, nodes.length - 1);
+		size = nodes.length;
+	}
+	
+	TreeNode bstRec(int[] nodes, int low, int high) {
+		if(low > high){
+			return null;
+		}
+		
+		int mid = low + (high - low) / 2;
+		TreeNode n = new TreeNode(nodes[mid]);
+		n.setLeft(bstRec(nodes, low, mid - 1));
+		n.setRight(bstRec(nodes, mid + 1, high));
+		return n;
+	}
+
+}
