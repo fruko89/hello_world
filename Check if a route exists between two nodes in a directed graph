@@ -1,0 +1,172 @@
+// Check if a route exists between two nodes in a directed graph.
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class BinarySearchTree {
+
+	private TreeNode root;
+	private int size;
+	private boolean isBalanced;
+	private List<TreeNode> nodes;
+
+	public BinarySearchTree(TreeNode root) {
+		if (root == null) {
+			return;
+		}
+
+		this.root = root;
+		size = 1;
+		isBalanced = true;
+		nodes = new LinkedList<TreeNode>();
+	}
+
+	// For tree only
+	public boolean routeExistsBetween(TreeNode n, TreeNode m){
+		boolean routeExists = false;
+		
+		TreeNode current = n;
+		while(current != null){
+			
+			if(current == m){
+				routeExists = true;
+			}
+			current = current.getParent();
+		}
+		
+		current = m;
+		while(current != null){
+			
+			if(current == n){
+				routeExists = true;
+			}
+			current = current.getParent();
+		}
+		
+		return routeExists;
+	}
+	
+	// For all directed graphs
+	public boolean routeExistsInBetween(TreeNode n1, TreeNode n2){
+		return routeExists(n1, n2) || routeExists(n2, n1);
+	}
+	
+	private boolean routeExists(TreeNode n1, TreeNode n2) {
+		
+		for (TreeNode n : getNodes()){
+			n.setVisited(false);
+		}
+		
+		LinkedList<TreeNode> nodeQueue = new LinkedList<TreeNode>();
+		nodeQueue.add(n1);
+		n1.setVisited(true);
+		
+		while(!nodeQueue.isEmpty()){
+			TreeNode current = nodeQueue.poll();
+			for(TreeNode n : current.getAdjacents()){
+				if(!n.isVisited()){
+					if(n == n2){
+						return true;
+					}
+					n.setVisited(true);
+					nodeQueue.add(n);
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public List<TreeNode> getNodes(){
+		return nodes;
+	}
+	
+	public void insert(int value) {
+		insert(this.root, value);
+	}
+
+	private void insert(TreeNode n, int value) {
+		if (n == null) {
+			n = new TreeNode(value);
+			nodes.add(n);
+			size++;
+		} else if (value > n.getValue()) {
+			if (n.getRight() == null) {
+				TreeNode newNode = new TreeNode(value);
+				n.setRight(newNode);
+				nodes.add(newNode);
+				size++;
+			} else {
+				insert(n.getRight(), value);
+			}
+		} else if (value < n.getValue()) {
+			if (n.getLeft() == null) {
+				TreeNode newNode = new TreeNode(value);
+				n.setLeft(newNode);
+				nodes.add(newNode);
+				size++;
+			} else {
+				insert(n.getLeft(), value);
+			}
+		}
+	}
+	
+	public TreeNode find(int value) {
+		return find(this.root, value);
+	}
+
+	private TreeNode find(TreeNode n, int value) {
+		if (n == null || value == n.getValue()) {
+			return n;
+		} else if (value > n.getValue()) {
+			return find(n.getRight(), value);
+		} else {
+			return find(n.getLeft(), value);
+		}
+	}
+
+	public void delete(int value) {
+		delete(this.root, value);
+	}
+
+	private void delete(TreeNode n, int value) {
+		TreeNode m = find(n, value);
+		if (m == null) {
+			return;
+		}
+
+		if (m.getLeft() != null && m.getRight() != null) {
+			TreeNode predecessor = getPredecessor(m);
+			m.setValue(predecessor.getValue());
+			delete(predecessor, predecessor.getValue());
+		} else {
+			if (m.getParent() == null) {
+				this.root = null;
+			} else if (m.getParent().getLeft() == m) {
+				m.getParent().setLeft(m.getLeft());
+			} else {
+				m.getParent().setRight(m.getRight());
+			}
+			nodes.remove(m);
+			size--;
+		}
+	}
+	
+	public TreeNode getPredecessor(TreeNode n) {
+		if (n == null) {
+			return n;
+		}
+		return findMax(n.getLeft());
+	}
+	
+	public TreeNode findMax(TreeNode root) {
+		if (root == null) {
+			return null;
+		}
+		TreeNode n = root;
+		while (n.getRight() != null) {
+			n = n.getRight();
+		}
+		return n;
+	}
+}
