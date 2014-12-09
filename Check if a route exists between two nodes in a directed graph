@@ -20,6 +20,7 @@ public class BinarySearchTree {
 		size = 1;
 		isBalanced = true;
 		nodes = new LinkedList<TreeNode>();
+		nodes.add(this.root);
 	}
 
 	// For tree only
