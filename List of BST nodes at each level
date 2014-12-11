@@ -1,0 +1,198 @@
+// Given a bst, return a list of node lists at each level
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class BinarySearchTree {
+
+	private TreeNode root;
+	private int size;
+	private boolean isBalanced;
+	private List<TreeNode> nodes;
+
+	public BinarySearchTree(TreeNode root) {
+		if (root == null) {
+			return;
+		}
+
+		this.root = root;
+		size = 1;
+		isBalanced = true;
+		nodes = new LinkedList<TreeNode>();
+		nodes.add(this.root);
+	}
+	
+	public List<List<TreeNode>> nodesAtLevels(TreeNode root){
+		
+		if(root == null) {
+			return null;
+		}
+		
+		List<List<TreeNode>> nodesLists = new ArrayList<List<TreeNode>>(); 
+		
+		LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+		queue.add(root);
+		
+		while(!queue.isEmpty()){
+			TreeNode current = queue.poll();
+			int currentLevel = current.getDistanceToRoot() - 1;
+			if(currentLevel >= nodesLists.size()){
+				nodesLists.add(new LinkedList<TreeNode>());
+			}
+			nodesLists.get(currentLevel).add(current);
+			for(TreeNode n : current.getAdjacents()){
+				queue.add(n);
+			}
+		}
+		return nodesLists;
+	}
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+class TreeNode {
+
+	private int value;
+	private TreeNode left;
+	private TreeNode right;
+	private TreeNode parent;
+	private List<TreeNode> adjacents;
+	private boolean isVisited;
+
+	public TreeNode(int value) {
+		this.value = value;
+		this.adjacents = new ArrayList<TreeNode>();
+		isVisited = false;
+	}
+
+	public void setLeft(TreeNode left) {
+
+		this.left = left;
+		if (left != null) {
+			left.parent = this;
+			this.adjacents.add(left);
+		}
+
+	}
+
+	public void setRight(TreeNode right) {
+
+		this.right = right;
+		if (right != null) {
+			right.parent = this;
+			this.adjacents.add(right);
+		}
+	}
+
+	public TreeNode getLeft() {
+		return this.left;
+	}
+
+	public TreeNode getRight() {
+		return this.right;
+	}
+
+	public TreeNode getParent() {
+		return this.parent;
+	}
+
+	public void setParent(TreeNode parent) {
+		this.parent = parent;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public int getValue() {
+		return this.value;
+	}
+
+	public List<TreeNode> getAdjacents() {
+		return this.adjacents;
+	}
+
+	public boolean isVisited() {
+		return this.isVisited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.isVisited = visited;
+	}
+	
+	public boolean isLeaf() {
+		return this.getLeft() == null && this.getRight() == null;
+	}
+	
+	public int getDistanceToRoot(){
+		TreeNode n = this;
+		int height = 0;
+		while(n != null) {
+			height++;
+			n = n.getParent();
+		}
+		return height;
+	}
+	
+	public int getDistanceToParent(TreeNode parent){
+		
+		TreeNode n = this;
+		int height = 0;
+		while(n != null) {
+			height++;
+			if(n == parent){
+				return height;
+			}
+			n = n.getParent();
+		}
+		return -1;	
+	}
+	
+	public String toString() {
+		return String.valueOf(value);
+	}
+
+	private TreeNode getMin() {
+		TreeNode n = this;
+		while (n.getLeft() != null) {
+			n = n.getLeft();
+		}
+		return n;
+	}
+
+	private void giveParentTo(TreeNode n) {
+		if (this.getParent() != null) {
+			if (this.getParent().getLeft() == this) {
+				this.getParent().setLeft(n);
+			} else {
+				this.getParent().setRight(n);
+			}
+		} 
+		if (n != null) {
+			n.setParent(this.getParent());
+		}
+	}
+
+	public void delete(int val) {
+		if (val > this.getValue() && this.getRight() != null) {
+			this.getRight().delete(val);
+		} else if (val < this.getValue() && this.getLeft() != null) {
+			this.getLeft().delete(val);
+		} else if (val == this.getValue()) {
+			if (this.getLeft() != null && this.getRight() != null) {
+				TreeNode successor = this.getRight().getMin();
+				this.setValue(successor.getValue());
+				successor.delete(successor.getValue());
+			} else if (this.getLeft() != null) {
+				this.giveParentTo(this.getLeft());
+			} else if (this.getRight() != null) {
+				this.giveParentTo(this.getRight());
+			} else {
+				this.giveParentTo(null);
+			}
+		}
+	}
+}
+
