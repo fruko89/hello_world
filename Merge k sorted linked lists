@@ -19,7 +19,7 @@ public class Solution {
             return null;
         }
         
-        PriorityQueue<ListNode> queue = new PriorityQueue<>(lists.size(), new Comparator<ListNode>() {
+        PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(lists.size(), new Comparator<ListNode>() {
             @Override
             public int compare(ListNode o1, ListNode o2) {
                 return o1.val - o2.val;
