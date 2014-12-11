@@ -1,0 +1,97 @@
+// Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+ 
+  // O(nlog(n))
+ public ListNode mergeKLists(List<ListNode> lists) {
+       if(lists == null || lists.isEmpty()){
+            return null;
+        }
+        
+        PriorityQueue<ListNode> queue = new PriorityQueue<>(lists.size(), new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode o1, ListNode o2) {
+                return o1.val - o2.val;
+            }
+        });
+        
+        for (int i = 0; i < lists.size(); i++) {
+            if (lists.get(i) != null)
+                queue.add(lists.get(i));
+        }
+ 
+        ListNode runner = null;
+        ListNode head = null;
+        
+        while (!queue.isEmpty()) {
+            ListNode node = queue.poll();
+            if(head == null){
+                head = node;
+                runner = head;
+            } else{
+                runner.next = node;
+                runner = runner.next;
+            }
+            if (node.next != null){
+                queue.add(node.next);
+            }
+        }
+        return head;
+    }
+    
+    // O(n^2)
+    public static Node mergeKLists(List<Node> lists) {
+        if(lists == null || lists.isEmpty()){
+            return null;
+        }
+        
+        Node head = null;
+        Node runner = null;
+        
+        while(!lists.isEmpty()){
+            
+                Node currentMin = null;
+                int min = Integer.MAX_VALUE;
+
+                for(int j = 0; j < lists.size(); j++){
+                    Node current = lists.get(j);
+                    if(current != null){
+                        if(current.value < min){
+                            min = current.value;
+                            currentMin = current;
+                        }
+                    }
+                }
+                
+                if(currentMin == null){
+                    break;
+                }
+                
+                if (head == null) {
+                    head = currentMin;
+                    runner = head;
+                } else {
+                    runner.next = currentMin;
+                    runner = runner.next;
+                }
+                
+                lists.remove(currentMin);
+                if(currentMin.next != null){
+                    lists.add(currentMin.next);
+                }
+        }
+
+        return head;
+    }
+}
