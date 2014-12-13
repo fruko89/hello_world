@@ -24,7 +24,7 @@ public class Tower<T> {
 	
 	public void popAndMoveto(Tower<T> destination){
 		T stackBase = disks.pop();
-		destination.getDisks().push(stackBase);
+		destination.push(stackBase);
 	}
 	
 	private void moveDisks(int n, Tower<T> destination, Tower<T> buffer){
