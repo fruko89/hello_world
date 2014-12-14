@@ -1,0 +1,34 @@
+// Given a binary tree, flatten it to a linked list in-place.
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void flatten(TreeNode root) {
+        Stack<TreeNode> nodes = new Stack<TreeNode>();
+        preorderTraversal(root, nodes);
+    }
+    
+    private void preorderTraversal(TreeNode root, Stack<TreeNode> nodes){
+        if(root == null){
+            return;
+        }
+        TreeNode leftBranch = root.left;
+        TreeNode rightBranch = root.right;
+        root.left = null;
+        
+        if(!nodes.isEmpty()){
+            nodes.pop().right = root;
+        }
+        nodes.push(root);
+        
+        preorderTraversal(leftBranch, nodes);
+        preorderTraversal(rightBranch, nodes);
+    }
+}
