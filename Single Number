@@ -1,0 +1,38 @@
+// Given an array of integers, every element appears twice except for one. Find that single one.
+
+// Note:
+// Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+
+public class Solution {
+    public int singleNumber(int[] A) {
+        
+        int bitCanceler = 0;
+        
+        for(int number : A){
+            
+            bitCanceler = bitCanceler ^ number;
+        }
+        
+        return bitCanceler;
+        
+        // HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
+        
+        // for(int number : A){
+        //     if(!counts.containsKey(number)){
+        //         counts.put(number, 1);
+        //     } else{
+        //         counts.put(number, counts.get(number) + 1);
+        //     }
+        // }
+        
+        // for(Integer number : counts.keySet()){
+        //     if(counts.get(number) == 1){
+        //         return number;
+        //     }
+        // }
+        
+        // return -1;
+        
+    }
+}
