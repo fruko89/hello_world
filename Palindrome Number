@@ -1,0 +1,67 @@
+import java.util.ArrayList;
+
+public class question25 {
+
+	public static boolean isPalindrome2(int x) {
+		
+		if(x < 0){
+			return false;
+		}
+		
+		long divisor = 1;
+		int i = 0;
+		while(x / divisor != 0){
+			i++;
+			divisor = (long)Math.pow(10, (double)i);		
+		}
+
+		ArrayList<Integer> digits = new ArrayList<Integer>();
+		int remainder = x;
+		while(--i >= 0){
+			divisor = (int)Math.pow(10, (double)i);
+			int digit = (int)(remainder / divisor);
+			remainder %= divisor;
+			digits.add(digit);			
+		}
+			
+		for(int j = 0; j < digits.size(); j++){
+			if(digits.get(j) != digits.get(digits.size()-j-1)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// No extra space //
+	public static boolean isPalindrome(int x) {
+		
+		if(x < 0){
+			return false;
+		}
+		
+		int divisor = 1;
+		while(x / divisor >= 10){
+			divisor *= 10;		
+		}
+		
+		while(divisor >= 10){
+			
+			int left = x / divisor;
+			int right = x % 10;
+			
+			if(left != right){
+				return false;
+			}
+			
+			x = (x % divisor) / 10; //chop first and last digits
+			divisor /= 100;
+		}
+		
+		return true;
+	}
+
+	public static void main(String[] args) {
+		System.out.print(isPalindrome(651232156));
+
+	}
+}
