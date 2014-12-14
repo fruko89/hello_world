@@ -1,0 +1,28 @@
+// Reverse digits of an integer.
+
+// Example1: x = 123, return 321
+// Example2: x = -123, return -321
+
+public class Solution {
+    public int reverse(int x) {
+        char[] xVal = String.valueOf(x).toCharArray();
+        for(int i = 0; i < xVal.length / 2; i++){
+            char temp = xVal[i];
+            xVal[i] = xVal[xVal.length - 1 - i];
+            xVal[xVal.length - 1 - i] = temp;
+        }
+        
+        StringBuffer s = new StringBuffer();
+        String negative = "";
+        for(char c : xVal){
+            if(c == '-'){
+                negative += c;
+            } else{
+                s.append(c);
+            }
+        }
+        
+        long reverse = Long.valueOf(negative + s.toString()).longValue();
+        return reverse > Integer.MAX_VALUE  || reverse < Integer.MIN_VALUE ? 0 : (int)reverse;
+    }
+}
