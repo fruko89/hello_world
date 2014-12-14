@@ -1,0 +1,147 @@
+// Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.
+
+// get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+// set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+
+import java.util.HashMap;
+
+public class LRUCache {
+    
+	private int cap;
+	private int size;
+	private Node head;
+	private Node tail;
+	private HashMap<Integer, Node> cacheMap;
+   
+	public LRUCache(int capacity) {
+    	this.cap = capacity;
+    	this.size = 0;
+    	this.cacheMap = new HashMap<Integer, Node>();
+    }
+    
+    public int get(int key) {
+        if(cacheMap.containsKey(key)){
+        	Node current = cacheMap.get(key);
+        	remove(current);
+        	addToTail(current);
+        	return current.getValue();
+        } else{
+        	return -1;
+        }
+    	
+    }
+    
+    public void set(int key, int value) {
+        if(cacheMap.containsKey(key)){
+        	Node current = cacheMap.get(key);
+        	current.setValue(value);
+        	remove(current);
+        	addToTail(current);
+        	
+        } else {
+        	if(size == cap){
+        		cacheMap.remove(head.getKey());
+        		remove(head);
+        	}
+        	
+        	Node newNode = new Node(key, value);
+        	cacheMap.put(key, newNode);
+        	addToTail(newNode);
+        }
+    }
+    
+    private void remove(Node node){
+    	if(node == null || size == 0) {
+    		return;
+    	}
+    	
+    	if(node == head){
+    		Node newHead = head.getNext();
+    		if(newHead != null){
+    			newHead.setPrev(null);
+    		}    		
+    		if(tail == head){
+    			tail = newHead;
+    		}
+    		head = newHead;
+    		node.setNext(null);
+    		node.setPrev(null);
+    	} else {
+    		Node prev = node.getPrev();
+    		Node next = node.getNext();
+    		if(node == tail){
+    		    tail = prev;
+    		} else {
+    			next.setPrev(prev);
+    		}
+    		prev.setNext(next);
+    		node.setPrev(null);
+    		node.setNext(null);	
+    	}
+    	size--;
+    	
+    }
+
+	private void addToTail(Node node){
+    	if(node == null){
+    		return;
+    	}
+    	
+    	if(head == null && tail == null){
+    		head = tail = node;
+    		node.setPrev(null);
+    		node.setNext(null);
+    	} else{
+    		tail.setNext(node);
+    		node.setPrev(tail);
+    		node.setNext(null);
+    		tail = node;
+    	}
+    	size++;
+    }
+}
+
+class Node{
+	
+	private int key;
+	private int value;
+	private Node next;
+	private Node prev;
+	
+	public Node(int key, int value){
+		this.key = key;
+		this.value = value;
+	}
+
+	public int getKey() {
+		return key;
+	}
+
+	public void setKey(int key) {
+		this.key = key;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public Node getNext() {
+		return next;
+	}
+
+	public void setNext(Node next) {
+		this.next = next;
+	}
+
+	public Node getPrev() {
+		return prev;
+	}
+
+	public void setPrev(Node prev) {
+		this.prev = prev;
+	}
+}
