@@ -1,0 +1,47 @@
+// Implement strStr().
+
+// Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+public class Solution {
+    public int strStr(String haystack, String needle) {
+        if(haystack == null || needle == null){
+            return -1;
+        }
+        
+        if(needle == ""){
+            return 0;
+        }
+        
+        if(haystack == ""){
+            return -1;
+        }
+        
+        char[] hayArr = haystack.toCharArray();
+        char[] needleArr = needle.toCharArray();
+        
+        boolean isSubstring = false;
+        for(int i = 0; i < hayArr.length; i++){
+            if(hayArr[i] == needleArr[0]){
+                 if(needleArr.length > hayArr.length - i){
+                     return -1;
+                 }
+                 
+                 isSubstring = true;
+                 int current = i;
+                 for(int j = 0; j < needleArr.length && isSubstring; j++){
+                     if(needleArr[j] != hayArr[current]){
+                         isSubstring = false;
+                     }
+                     current++;
+                 }
+                 
+                 if(isSubstring){
+                     return i;
+                 } 
+                 
+                 isSubstring = false;
+            }
+        }
+        return -1;
+    }
+}
