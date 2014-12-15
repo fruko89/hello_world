@@ -1,0 +1,55 @@
+// Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+// For example,
+// [1,1,2] have the following unique permutations:
+// [1,1,2], [1,2,1], and [2,1,1].
+
+
+public class Solution {
+    public List<List<Integer>> permuteUnique(int[] num) {
+        List<List<Integer>> perms = new ArrayList<List<Integer>>();
+        List<Integer> start = new ArrayList<Integer>();
+        for(int i : num) { start.add(i); }
+        List<Integer> empty = new ArrayList<Integer>();
+        
+        permutations(empty, start, perms);
+        
+        return perms;
+    }
+    
+    private void permutations(List<Integer> empty, List<Integer> start, List<List<Integer>> perms) {
+        
+        if(start.size() == 0){
+            perms.add(empty);
+            return;
+        }
+        
+        HashSet<Integer> uniques = new HashSet<Integer>();
+        
+        for(int i = 0; i < start.size(); i++) {
+            if(!uniques.contains(start.get(i))){
+                uniques.add(start.get(i));
+                permutations(mergedList(empty, start.subList(i, i + 1)), 
+                            mergedList(start.subList(0, i), start.subList(i + 1, start.size())), 
+                            perms);
+                
+            }
+        }
+    }
+    
+    private List<Integer> mergedList(List<Integer> list1, List<Integer> list2){
+        if(list1 == null && list2 == null){
+            return null;
+        } else if(list1 == null){
+            return list2;
+        } else if(list2 == null){
+            return list1;
+        }
+        
+        List<Integer> mergedList = new ArrayList<Integer>();
+        mergedList.addAll(list1);
+        mergedList.addAll(list2);
+        
+        return mergedList;
+    }
+}
