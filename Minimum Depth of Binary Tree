@@ -1,0 +1,70 @@
+Given a binary tree, find its minimum depth.
+
+The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int minDepth(TreeNode root) {
+       if(root == null){
+           return 0;
+       }
+       
+       LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+       queue.add(root);
+       
+       TreeNode firstLeaf = null;
+       
+       while(!queue.isEmpty()){
+           TreeNode current = queue.poll();
+           if(isLeaf(current)){
+               firstLeaf = current;
+               break;
+           }
+           if(current.left != null){
+               queue.add(current.left);
+           } 
+           if(current.right != null){
+               queue.add(current.right);
+           }
+       }
+       
+       return getDepth(root, firstLeaf);
+    }
+    
+    private int getDepth(TreeNode root, TreeNode n){
+        IntWrapper wrapper = new IntWrapper();
+        getDepth(root, n, wrapper, 1);
+        return wrapper.depth;
+    }
+    
+    private void getDepth(TreeNode root, TreeNode n, IntWrapper wrapper, int currentDepth){
+        if(root == null){
+            return;
+        }
+        
+         if(root == n){
+            wrapper.depth = currentDepth;
+            return; 
+        }
+        getDepth(root.left, n, wrapper, currentDepth + 1);
+        getDepth(root.right, n, wrapper, currentDepth + 1);
+        
+    }
+    
+    
+    private boolean isLeaf(TreeNode root) {
+        return root.left == null && root.right == null;
+    }
+}
+
+class IntWrapper{
+    public static int depth = 0;
+}
