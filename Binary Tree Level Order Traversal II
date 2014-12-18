@@ -1,0 +1,94 @@
+Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+For example:
+Given binary tree {3,9,20,#,#,15,7},
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its bottom-up level order traversal as:
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+
+
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> tree = new LinkedList<List<Integer>>();
+        
+        if(root == null){
+            return tree;
+        }
+        
+        
+        ArrayList<Integer> nodes = new ArrayList<Integer>();
+        
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        
+        int currentLevel = 1;
+        while(!queue.isEmpty()){
+            TreeNode n = queue.poll();
+            if(currentLevel == getLevel(n, root)){
+                nodes.add(n.val);
+            } else {
+                tree.add(nodes);
+                nodes = new ArrayList<Integer>();
+                currentLevel++;
+                nodes.add(n.val);
+            }
+            
+            if(n.left != null){
+                queue.add(n.left);
+            }
+            if(n.right != null){
+                queue.add(n.right);
+            }
+        }
+        
+        tree.add(nodes);
+        
+        Collections.reverse(tree);
+        return tree;
+    }
+    
+    int getLevel(TreeNode n, TreeNode root){
+        IntWrapper iw = new IntWrapper();
+        getDistToRoot(n, root, iw, 1);
+        return iw.height;
+    }
+    
+    void getDistToRoot(TreeNode n, TreeNode root, IntWrapper iw, int height){
+        
+        if(root == null){
+            return;
+        }
+        
+        if(root == n){
+            iw.height = height;
+            return;
+        }
+        
+        getDistToRoot(n, root.left, iw, height + 1);
+        getDistToRoot(n, root.right, iw, height + 1);
+    }
+    
+    
+}
+
+class IntWrapper{
+    public int height = -1;
+}
