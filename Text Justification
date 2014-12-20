@@ -1,0 +1,92 @@
+Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.
+
+You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly L characters.
+
+Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+
+For the last line of text, it should be left justified and no extra space is inserted between words.
+
+For example,
+words: ["This", "is", "an", "example", "of", "text", "justification."]
+L: 16.
+
+Return the formatted lines as:
+[
+   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+Note: Each word is guaranteed not to exceed L in length.
+ 
+ public List<String> fullJustify(String[] words, int L) {
+        
+        List<String> finalLines = new ArrayList<String>();
+        
+        List<List<String>> lines = new ArrayList<List<String>>();
+        List<String> currentWordsList = new ArrayList<String>();
+        
+        int lineLength = 0;
+        for(String word : words){
+            lineLength+=word.length();
+            if(lineLength > L){
+                lines.add(currentWordsList);
+                currentWordsList = new ArrayList<String>();
+                lineLength = word.length();
+            } 
+            currentWordsList.add(word); 
+            lineLength++;
+        }
+        
+        lines.add(currentWordsList);
+        
+        for(int k = 0; k < lines.size(); k++){
+            currentWordsList = lines.get(k);      
+            
+            if(k == lines.size() - 1){
+                String lastLine = "";
+                
+                for(int i = 0; i < currentWordsList.size(); i++){
+                    if(i != 0){
+                        lastLine+=" ";
+                    }
+                    lastLine+=currentWordsList.get(i);
+                }
+                int unFilledLength = L - lastLine.length();
+                for(int i = 0; i < unFilledLength; i++){
+                    lastLine+=" ";
+                }
+                
+                finalLines.add(lastLine);
+                break;
+            }
+            
+            int spaceCount = currentWordsList.size() == 1 ? 1 : currentWordsList.size() - 1;
+            int filledLength = 0;
+            for(String word : currentWordsList){
+                filledLength += word.length();
+            }
+            
+            int spaceLength = (L - filledLength) / spaceCount;
+            int spaceRemainder = (L - filledLength) % spaceCount;
+            
+            String space ="";
+            for(int i = 0; i < spaceLength; i++){
+                space+=" ";
+            }
+            
+            String currentLine = "";
+            for(String word : currentWordsList){
+                currentLine+=word;
+                if(currentLine.length() < L){
+                    currentLine+=space;
+                    if(spaceRemainder-- > 0){
+                        currentLine+=" ";
+                    }
+                }
+            } 
+            
+            finalLines.add(currentLine);
+        }
+        
+        return finalLines;
+    }
