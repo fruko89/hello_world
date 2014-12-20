@@ -1,0 +1,32 @@
+Given a non-negative number represented as an array of digits, plus one to the number.
+
+The digits are stored such that the most significant digit is at the head of the list.
+
+public class Solution {
+    public int[] plusOne(int[] digits) {
+        ArrayList<Integer> digitList = new ArrayList<Integer>();
+        int carry = 1;
+        for(int i = digits.length - 1; i >= 0; i--){
+            int sum = digits[i] + carry;
+            if(sum / 10 != 0){
+                carry = sum / 10;
+                sum %= 10;
+            } else{
+                carry = 0;
+            }
+            digitList.add(sum);
+        }
+        
+        if(carry != 0){
+            digitList.add(carry);
+        }
+        
+        int newDigits[] = new int[digitList.size()];
+        
+        for (int i = digitList.size() - 1; i >= 0; i--) {
+            newDigits[i] = digitList.get(digitList.size() - 1 - i);
+        }
+    
+        return newDigits;
+    }
+}
