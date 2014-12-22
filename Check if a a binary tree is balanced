@@ -71,7 +71,7 @@ public class BinaryTree {
   // Version 3
 	public boolean isBalanced(TreeNode n) {
 		isBalanced = true;
-		checkBalancedUnder(n;
+		checkBalancedUnder(n);
 		return isBalanced;
 	}
 
