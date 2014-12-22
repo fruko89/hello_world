@@ -4,7 +4,7 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 
 public class Solution {
     
-    private int[] fib = new int[100];
+    private int[] fib = new int[47];
     
     public int climbStairs(int n) {
         return fibonacci(n);
