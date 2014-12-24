@@ -1,0 +1,40 @@
+Say you have an array for which the ith element is the price of a given stock on day i.
+
+Design an algorithm to find the maximum profit. You may complete at most two transactions.
+
+Note:
+You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+
+
+public class Solution {
+    public int maxProfit(int[] prices) {
+        if(prices.length == 0) {
+            return 0;
+        }
+        
+        int[] profitUntil = new int[prices.length];
+        int[] profitFrom = new int[prices.length];
+        
+        int minUntil = prices[0];
+        
+        for (int i = 1; i < prices.length; i++) {
+            profitUntil[i] = Math.max(profitUntil[i - 1], prices[i] - minUntil);
+            minUntil = Math.min(minUntil, prices[i]);
+        }
+        
+        int maxFrom = prices[prices.length - 1];
+        
+        for(int i = prices.length - 2; i >= 0; i--){
+            profitFrom[i] = Math.max(profitFrom[i + 1], maxFrom - prices[i]);
+            maxFrom = Math.max(maxFrom, prices[i]);
+        }
+        
+        int maxCombined = 0;
+        for (int i = 0; i < prices.length; i++) {
+            maxCombined = Math.max(maxCombined, profitUntil[i] + profitFrom[i]);
+        }
+        
+        return maxCombined;
+        
+    }
+}
