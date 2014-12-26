@@ -1,0 +1,37 @@
+Given two sorted integer arrays A and B, merge B into A as one sorted array.
+
+Note:
+You may assume that A has enough space (size that is greater or equal to m + n) to hold additional elements from B. The number of elements initialized in A and B are m and n respectively.
+
+public class Solution {
+    public void merge(int A[], int m, int B[], int n) {
+        
+        ArrayList<Integer> combin = new ArrayList<Integer>();
+        int aIndex = 0;
+        int bIndex = 0;
+        
+        while(true) {
+            if (aIndex < m && bIndex < n){
+                if(A[aIndex] < B[bIndex]) {
+                    combin.add(A[aIndex]);
+                    aIndex++;
+                } else {
+                    combin.add(B[bIndex]);
+                    bIndex++;
+                }
+            } else if (aIndex < m) {
+                combin.add(A[aIndex]);
+                aIndex++;
+            } else if (bIndex < n) {
+                combin.add(B[bIndex]);
+                bIndex++;
+            } else {
+                break;
+            }
+        }
+        
+        for (int i = 0; i < combin.size(); i++) {
+            A[i] = combin.get(i);
+        }
+    }
+}
