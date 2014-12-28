@@ -1,0 +1,46 @@
+Given a list, rotate the list to the right by k places, where k is non-negative.
+
+For example:
+Given 1->2->3->4->5->NULL and k = 2,
+return 4->5->1->2->3->NULL.
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode rotateRight(ListNode head, int n) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+        
+        ListNode tracker = head;
+        int size = 1;
+        while (tracker.next != null) {
+            size++;
+            tracker = tracker.next;
+        }
+        
+        tracker.next = head;
+        
+        ListNode tracker2 = head;
+        ListNode prev = tracker;
+        int shifts = size - n % size;
+        for (int i = 0; i < shifts; i++) {
+            prev = tracker2;
+            tracker2 = tracker2.next;
+        }
+        
+        prev.next = null;
+        return tracker2;
+    
+    }
+}
